@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SeniorVoice - Prototype</title>
+  <style>
+    :root {
+      --bg-1: #f3efe3;
+      --bg-2: #e5f1ee;
+      --card: #fffdf8;
+      --ink: #17212b;
+      --muted: #55626f;
+      --accent: #0b7a75;
+      --accent-2: #0ea5a5;
+      --good: #146c43;
+      --warn: #8a5a00;
+      --bad: #a71d2a;
+      --line: #d8e1e5;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 10% 10%, var(--bg-1), #f8fbfb 45%, var(--bg-2));
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 16px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+      padding: 18px;
+    }
+
+    .hero {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      background: linear-gradient(120deg, #e8f5f2, #fff8e8);
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 28px;
+      letter-spacing: 0.3px;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    p { margin: 0; color: var(--muted); }
+
+    .record-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .record-btn {
+      border: 0;
+      border-radius: 11px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      font-size: 16px;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .record-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .chip {
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+
+    .chip.idle { background: #eef2f6; color: #364352; }
+    .chip.rec { background: #ffe7e7; color: var(--bad); border-color: #ffd1d1; }
+    .chip.proc { background: #fff3d8; color: var(--warn); border-color: #ffe3ad; }
+    .chip.ok { background: #e2f6e9; color: var(--good); border-color: #c4ebd2; }
+    .chip.err { background: #ffe9ea; color: var(--bad); border-color: #ffc8cd; }
+
+    .commands {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .cmd {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px;
+      font-size: 13px;
+      background: #fcfefe;
+    }
+
+    .cmd b { display: block; margin-bottom: 3px; }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .field {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px;
+      min-height: 56px;
+      background: #fbfdfd;
+    }
+
+    .field .k {
+      font-size: 12px;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .field .v {
+      font-size: 14px;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    pre {
+      margin: 10px 0 0;
+      background: #111827;
+      color: #d1e7ff;
+      border-radius: 10px;
+      border: 1px solid #223041;
+      padding: 12px;
+      min-height: 210px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #4b5b68;
+      border-left: 3px solid #96b8b6;
+      padding-left: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .container { grid-template-columns: 1fr; }
+      .commands { grid-template-columns: 1fr; }
+      .result-grid { grid-template-columns: 1fr; }
+      .hero { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="panel hero">
+      <div>
+        <h1>SeniorVoice</h1>
+        <p>Reconnaissance vocale seniors tunisiens: hesitations, dialecte tunisien + francais, voix faible.</p>
+      </div>
+      <div class="record-wrap">
+        <button class="record-btn" id="recordBtn">Demarrer</button>
+        <span id="statusChip" class="chip idle">Pret</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Commandes Supportees (10)</h2>
+      <div class="commands">
+        <div class="cmd"><b>create_reminder</b>"rappelle moi demain 10h"</div>
+        <div class="cmd"><b>medication_reminder</b>"rappel medicament ce soir"</div>
+        <div class="cmd"><b>call_contact</b>"appelle ma fille"</div>
+        <div class="cmd"><b>emergency_call</b>"urgence, appelle secours"</div>
+        <div class="cmd"><b>get_weather</b>"chnouwa meteo lyoum"</div>
+        <div class="cmd"><b>set_alarm</b>"mets une alarme a 6h"</div>
+        <div class="cmd"><b>check_time</b>"quelle heure il est"</div>
+        <div class="cmd"><b>cancel_reminder</b>"annule mon rappel"</div>
+        <div class="cmd"><b>send_message</b>"envoie sms a mon fils"</div>
+        <div class="cmd"><b>play_media</b>"mets la radio"</div>
+      </div>
+      <p class="hint">Conseil demo: parler lentement, 1 commande a la fois, avec bruit de fond leger.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Resultat Interprete</h2>
+      <div class="result-grid">
+        <div class="field"><span class="k">Action</span><span id="f_action" class="v">-</span></div>
+        <div class="field"><span class="k">Confiance</span><span id="f_conf" class="v">-</span></div>
+        <div class="field"><span class="k">Texte reconnu</span><span id="f_raw" class="v">-</span></div>
+        <div class="field"><span class="k">Texte normalise</span><span id="f_norm" class="v">-</span></div>
+        <div class="field"><span class="k">Date</span><span id="f_date" class="v">-</span></div>
+        <div class="field"><span class="k">Heure</span><span id="f_time" class="v">-</span></div>
+        <div class="field"><span class="k">Contact</span><span id="f_contact" class="v">-</span></div>
+        <div class="field"><span class="k">Ville/Media</span><span id="f_extra" class="v">-</span></div>
+      </div>
+      <pre id="jsonBox">En attente d'une commande vocale...</pre>
+    </section>
+  </main>
+
+  <script>
+    const btn = document.getElementById("recordBtn");
+    const statusChip = document.getElementById("statusChip");
+    const jsonBox = document.getElementById("jsonBox");
+
+    const fields = {
+      action: document.getElementById("f_action"),
+      conf: document.getElementById("f_conf"),
+      raw: document.getElementById("f_raw"),
+      norm: document.getElementById("f_norm"),
+      date: document.getElementById("f_date"),
+      time: document.getElementById("f_time"),
+      contact: document.getElementById("f_contact"),
+      extra: document.getElementById("f_extra"),
+    };
+
+    let recorderState = {
+      recording: false,
+      stream: null,
+      audioCtx: null,
+      source: null,
+      processor: null,
+      silentGain: null,
+      chunks: [],
+    };
+
+    function setStatus(kind, text) {
+      statusChip.className = `chip ${kind}`;
+      statusChip.textContent = text;
+    }
+
+    function setField(el, value) {
+      el.textContent = value == null || value === "" ? "-" : String(value);
+    }
+
+    function fillResult(data) {
+      setField(fields.action, data.action);
+      setField(fields.conf, data.confidence != null ? `${Math.round(data.confidence * 100)}%` : "-");
+      setField(fields.raw, data.raw_text);
+      setField(fields.norm, data.normalized_text);
+      setField(fields.date, data.date);
+      setField(fields.time, data.time);
+      setField(fields.contact, data.contact);
+      setField(fields.extra, data.city || data.media || data.timezone || "-");
+      jsonBox.textContent = JSON.stringify(data, null, 2);
+    }
+
+    function floatTo16BitPCM(input) {
+      const output = new Int16Array(input.length);
+      for (let i = 0; i < input.length; i++) {
+        const s = Math.max(-1, Math.min(1, input[i]));
+        output[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
+      }
+      return output;
+    }
+
+    function downsampleBuffer(buffer, inputRate, outputRate) {
+      if (outputRate >= inputRate) return buffer;
+      const ratio = inputRate / outputRate;
+      const newLength = Math.round(buffer.length / ratio);
+      const result = new Float32Array(newLength);
+      let offsetResult = 0;
+      let offsetBuffer = 0;
+      while (offsetResult < result.length) {
+        const nextOffsetBuffer = Math.round((offsetResult + 1) * ratio);
+        let accum = 0;
+        let count = 0;
+        for (let i = offsetBuffer; i < nextOffsetBuffer && i < buffer.length; i++) {
+          accum += buffer[i];
+          count++;
+        }
+        result[offsetResult] = count > 0 ? accum / count : 0;
+        offsetResult++;
+        offsetBuffer = nextOffsetBuffer;
+      }
+      return result;
+    }
+
+    function trimSilence(samples, threshold = 0.01) {
+      let start = 0;
+      let end = samples.length - 1;
+
+      while (start < samples.length && Math.abs(samples[start]) < threshold) start++;
+      while (end > start && Math.abs(samples[end]) < threshold) end--;
+
+      if (end <= start) return samples;
+
+      const padding = 1600; // ~100 ms at 16k
+      const s = Math.max(0, start - padding);
+      const e = Math.min(samples.length - 1, end + padding);
+      return samples.slice(s, e + 1);
+    }
+
+    function encodeWav(samples, sampleRate) {
+      const bytesPerSample = 2;
+      const blockAlign = bytesPerSample;
+      const byteRate = sampleRate * blockAlign;
+      const dataSize = samples.length * bytesPerSample;
+      const buffer = new ArrayBuffer(44 + dataSize);
+      const view = new DataView(buffer);
+
+      const writeString = (offset, str) => {
+        for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+      };
+
+      writeString(0, "RIFF");
+      view.setUint32(4, 36 + dataSize, true);
+      writeString(8, "WAVE");
+      writeString(12, "fmt ");
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true);
+      view.setUint16(22, 1, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, byteRate, true);
+      view.setUint16(32, blockAlign, true);
+      view.setUint16(34, 16, true);
+      writeString(36, "data");
+      view.setUint32(40, dataSize, true);
+
+      let offset = 44;
+      for (let i = 0; i < samples.length; i++, offset += 2) {
+        view.setInt16(offset, samples[i], true);
+      }
+      return new Blob([buffer], { type: "audio/wav" });
+    }
+
+    async function startRecording() {
+      recorderState.stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          channelCount: 1,
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
+
+      recorderState.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      recorderState.source = recorderState.audioCtx.createMediaStreamSource(recorderState.stream);
+      recorderState.processor = recorderState.audioCtx.createScriptProcessor(4096, 1, 1);
+      recorderState.silentGain = recorderState.audioCtx.createGain();
+      recorderState.silentGain.gain.value = 0;
+      recorderState.chunks = [];
+
+      recorderState.processor.onaudioprocess = (event) => {
+        const data = event.inputBuffer.getChannelData(0);
+        recorderState.chunks.push(new Float32Array(data));
+      };
+
+      recorderState.source.connect(recorderState.processor);
+      recorderState.processor.connect(recorderState.silentGain);
+      recorderState.silentGain.connect(recorderState.audioCtx.destination);
+
+      recorderState.recording = true;
+      btn.textContent = "Arreter";
+      setStatus("rec", "Enregistrement en cours");
+      jsonBox.textContent = "Parlez puis cliquez sur Arreter.";
+    }
+
+    async function stopRecordingAndSend() {
+      recorderState.recording = false;
+      btn.disabled = true;
+      btn.textContent = "Demarrer";
+      setStatus("proc", "Traitement IA...");
+
+      recorderState.processor.disconnect();
+      recorderState.source.disconnect();
+      recorderState.silentGain.disconnect();
+      recorderState.stream.getTracks().forEach((t) => t.stop());
+      await recorderState.audioCtx.close();
+
+      const total = recorderState.chunks.reduce((n, c) => n + c.length, 0);
+      if (total < 8000) {
+        setStatus("err", "Audio trop court");
+        jsonBox.textContent = "Parlez au moins 1 seconde puis Arreter.";
+        btn.disabled = false;
+        return;
+      }
+
+      const merged = new Float32Array(total);
+      let pos = 0;
+      for (const c of recorderState.chunks) {
+        merged.set(c, pos);
+        pos += c.length;
+      }
+
+      const down = downsampleBuffer(merged, recorderState.audioCtx.sampleRate, 16000);
+      const trimmed = trimSilence(down, 0.01);
+      const pcm16 = floatTo16BitPCM(trimmed);
+      const wavBlob = encodeWav(pcm16, 16000);
+
+      try {
+        const formData = new FormData();
+        formData.append("audio", wavBlob, "voice.wav");
+
+        const response = await fetch("/process", { method: "POST", body: formData });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || `HTTP ${response.status}`);
+
+        fillResult(data);
+        setStatus("ok", "Commande comprise");
+      } catch (error) {
+        setStatus("err", "Erreur");
+        jsonBox.textContent = String(error);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    btn.addEventListener("click", async () => {
+      try {
+        if (!recorderState.recording) {
+          await startRecording();
+        } else {
+          await stopRecordingAndSend();
+        }
+      } catch (error) {
+        setStatus("err", "Erreur micro");
+        jsonBox.textContent = String(error);
+        btn.disabled = false;
+        btn.textContent = "Demarrer";
+        recorderState.recording = false;
+      }
+    });
+  </script>
+</body>
+</html>

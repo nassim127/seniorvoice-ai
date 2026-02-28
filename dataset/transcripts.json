@@ -1,0 +1,252 @@
+[
+  {
+    "audio": "audio_01.wav",
+    "transcript": "Euh rappelle moi demain matin doctour a 10h",
+    "intent": "create_reminder"
+  },
+  {
+    "audio": "audio_02.wav",
+    "transcript": "Ben rappel demain 8h prise de sang",
+    "intent": "create_reminder"
+  },
+  {
+    "audio": "audio_03.wav",
+    "transcript": "Rappelle moi lundi payer facture",
+    "intent": "create_reminder"
+  },
+  {
+    "audio": "audio_04.wav",
+    "transcript": "Yaani ghodwa sbah rappel visite cardiologue",
+    "intent": "create_reminder"
+  },
+  {
+    "audio": "audio_05.wav",
+    "transcript": "Euh rappelle moi vendredi dentiste 14h30",
+    "intent": "create_reminder"
+  },
+  {
+    "audio": "audio_06.wav",
+    "transcript": "Rappelle medicament tension ce soir",
+    "intent": "medication_reminder"
+  },
+  {
+    "audio": "audio_07.wav",
+    "transcript": "Ben rappelle moi le cachet demain 9h",
+    "intent": "medication_reminder"
+  },
+  {
+    "audio": "audio_08.wav",
+    "transcript": "Mmm dawa apres dejeuner rappel",
+    "intent": "medication_reminder"
+  },
+  {
+    "audio": "audio_09.wav",
+    "transcript": "Rappel pilule diabete tous les matins",
+    "intent": "medication_reminder"
+  },
+  {
+    "audio": "audio_10.wav",
+    "transcript": "Euh traitement coeur rappelle a 20h",
+    "intent": "medication_reminder"
+  },
+  {
+    "audio": "audio_11.wav",
+    "transcript": "Appelle ma fille Sara",
+    "intent": "call_contact"
+  },
+  {
+    "audio": "audio_12.wav",
+    "transcript": "Ben telephone au docteur",
+    "intent": "call_contact"
+  },
+  {
+    "audio": "audio_13.wav",
+    "transcript": "Klim mon fils maintenant",
+    "intent": "call_contact"
+  },
+  {
+    "audio": "audio_14.wav",
+    "transcript": "Euh appelle pharmacie du quartier",
+    "intent": "call_contact"
+  },
+  {
+    "audio": "audio_15.wav",
+    "transcript": "Contacte mon voisin Ali",
+    "intent": "call_contact"
+  },
+  {
+    "audio": "audio_16.wav",
+    "transcript": "Appelle urgence",
+    "intent": "emergency_call"
+  },
+  {
+    "audio": "audio_17.wav",
+    "transcript": "Ambulance s il vous plait",
+    "intent": "emergency_call"
+  },
+  {
+    "audio": "audio_18.wav",
+    "transcript": "Secours je me sens mal",
+    "intent": "emergency_call"
+  },
+  {
+    "audio": "audio_19.wav",
+    "transcript": "Samu vite",
+    "intent": "emergency_call"
+  },
+  {
+    "audio": "audio_20.wav",
+    "transcript": "Euh urgence appelle secours",
+    "intent": "emergency_call"
+  },
+  {
+    "audio": "audio_21.wav",
+    "transcript": "Chnouwa meteo lyoum",
+    "intent": "get_weather"
+  },
+  {
+    "audio": "audio_22.wav",
+    "transcript": "Meteo demain a Tunis",
+    "intent": "get_weather"
+  },
+  {
+    "audio": "audio_23.wav",
+    "transcript": "Quel temps fait il a Sfax",
+    "intent": "get_weather"
+  },
+  {
+    "audio": "audio_24.wav",
+    "transcript": "Jaw ghodwa Sousse",
+    "intent": "get_weather"
+  },
+  {
+    "audio": "audio_25.wav",
+    "transcript": "Euh temperature aujourd hui Nabeul",
+    "intent": "get_weather"
+  },
+  {
+    "audio": "audio_26.wav",
+    "transcript": "Mets une alarme a 6h",
+    "intent": "set_alarm"
+  },
+  {
+    "audio": "audio_27.wav",
+    "transcript": "Ben reveille moi demain 7h",
+    "intent": "set_alarm"
+  },
+  {
+    "audio": "audio_28.wav",
+    "transcript": "Alarme pour lundi matin",
+    "intent": "set_alarm"
+  },
+  {
+    "audio": "audio_29.wav",
+    "transcript": "Euh alarme 14h pour sieste",
+    "intent": "set_alarm"
+  },
+  {
+    "audio": "audio_30.wav",
+    "transcript": "Reveil apres demain 8h30",
+    "intent": "set_alarm"
+  },
+  {
+    "audio": "audio_31.wav",
+    "transcript": "Quelle heure il est",
+    "intent": "check_time"
+  },
+  {
+    "audio": "audio_32.wav",
+    "transcript": "Wa9tech taw",
+    "intent": "check_time"
+  },
+  {
+    "audio": "audio_33.wav",
+    "transcript": "Dis moi l heure",
+    "intent": "check_time"
+  },
+  {
+    "audio": "audio_34.wav",
+    "transcript": "Euh heure maintenant",
+    "intent": "check_time"
+  },
+  {
+    "audio": "audio_35.wav",
+    "transcript": "Temps maintenant s il te plait",
+    "intent": "check_time"
+  },
+  {
+    "audio": "audio_36.wav",
+    "transcript": "Annule mon rappel de demain",
+    "intent": "cancel_reminder"
+  },
+  {
+    "audio": "audio_37.wav",
+    "transcript": "Supprime rappel docteur",
+    "intent": "cancel_reminder"
+  },
+  {
+    "audio": "audio_38.wav",
+    "transcript": "Ben enleve le rappel de 10h",
+    "intent": "cancel_reminder"
+  },
+  {
+    "audio": "audio_39.wav",
+    "transcript": "Efface rappel medicament ce soir",
+    "intent": "cancel_reminder"
+  },
+  {
+    "audio": "audio_40.wav",
+    "transcript": "Euh annule tout les rappels",
+    "intent": "cancel_reminder"
+  },
+  {
+    "audio": "audio_41.wav",
+    "transcript": "Envoie un message a ma fille je vais bien",
+    "intent": "send_message"
+  },
+  {
+    "audio": "audio_42.wav",
+    "transcript": "Sms a mon fils je suis arrive",
+    "intent": "send_message"
+  },
+  {
+    "audio": "audio_43.wav",
+    "transcript": "Dis a docteur je serai en retard",
+    "intent": "send_message"
+  },
+  {
+    "audio": "audio_44.wav",
+    "transcript": "Euh message pour voisin passe ce soir",
+    "intent": "send_message"
+  },
+  {
+    "audio": "audio_45.wav",
+    "transcript": "Ben envoie message a ma soeur rappelle moi",
+    "intent": "send_message"
+  },
+  {
+    "audio": "audio_46.wav",
+    "transcript": "Mets la radio",
+    "intent": "play_media"
+  },
+  {
+    "audio": "audio_47.wav",
+    "transcript": "Lance musique douce",
+    "intent": "play_media"
+  },
+  {
+    "audio": "audio_48.wav",
+    "transcript": "Euh joue coran",
+    "intent": "play_media"
+  },
+  {
+    "audio": "audio_49.wav",
+    "transcript": "Quran sourate yassin",
+    "intent": "play_media"
+  },
+  {
+    "audio": "audio_50.wav",
+    "transcript": "Ben chanson calme",
+    "intent": "play_media"
+  }
+]
